@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache
+  labels:
+    app: apache
+spec:
+  selector:
+    matchLabels:
+      app: apache
+  template:
+    metadata:
+      labels:
+        app: apache
+    spec:
+      containers:
+      - image: httpd
+        name: apache
+        ports:
+        - containerPort: 8081
+          name: apache
+        volumeMounts:
+        - name: apache-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: apache-storage
+        persistentVolumeClaim:
+          claimName: apache-claim
